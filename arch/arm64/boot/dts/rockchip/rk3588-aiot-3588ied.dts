@@ -74,6 +74,8 @@
 		mmc1 = &sdmmc;
 		mmc2 = &sdio;
 		ethernet0 = &gmac1;
+		hdmi0 = &hdmi0;
+		hdmi1 = &hdmi1;
 	};
 
 	adc-keys-0 {
@@ -508,9 +510,9 @@
 };
 
 &hdmi1 {
-	frl-enable-gpios = <&gpio1 RK_PC6 GPIO_ACTIVE_LOW>;
+	enable-gpios = <&gpio1 RK_PC6 GPIO_ACTIVE_HIGH>;
 	pinctrl-0 = <&hdmim1_tx1_cec &hdmim0_tx1_hpd
-		     &hdmim2_tx1_scl &hdmim2_tx1_sda &hdmi1_tx_on_h>;
+		     &hdmim2_tx1_scl &hdmim2_tx1_sda>;
 	pinctrl-names = "default";
 	status = "okay";
 };
@@ -522,6 +524,15 @@
  * defaults to "disabled" — we must enable it here.
  */
 &hdmi1_in_vp0 {
+	status = "okay";
+};
+
+/*
+ * VOP-side output endpoint must also be enabled, otherwise the DRM
+ * display pipeline (VOP VP0 -> HDMI1) won't be established and the
+ * HDMI screen stays dark even though hdmi1_in_vp0 is okay.
+ */
+&vp0_out_hdmi1 {
 	status = "okay";
 };
 

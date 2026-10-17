@@ -69,7 +69,7 @@ jobs:
       - name: Upload Kernel to Release
         uses: ncipollo/release-action@main
         with:
-          tag: OpenAnolis_devel-6.6
+          tag: aiot-3588ied_devel-6.6
           artifacts: ./release/*
           allowUpdates: true
           removeArtifacts: false
