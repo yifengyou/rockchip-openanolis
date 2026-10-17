@@ -2,7 +2,7 @@
 
 set -ex
 
-TARGET_IP="${1:-192.168.33.39}"
+TARGET_IP="${1:-192.168.33.43}"
 TARGET_USER="root"
 TARGET_PASS="admin"
 REMOTE_DIR="/boot/6.1"
