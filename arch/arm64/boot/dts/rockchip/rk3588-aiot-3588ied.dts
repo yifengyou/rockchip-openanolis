@@ -430,11 +430,14 @@
 &rknpu {
 	rknpu-supply = <&vdd_npu_s0>;
 	mem-supply = <&vdd_npu_mem_s0>;
+	dynamic-power-coefficient = <1200>;
 	status = "okay";
 };
 
 &rknpu_mmu {
-	status = "okay";
+	/* Disabled: IOMMU runtime suspend crashes when NPU power domain
+	 * is off (SError on register access). NPU uses non-iommu mode. */
+	status = "disabled";
 };
 
 &av1d {
@@ -934,13 +937,7 @@
 	status = "okay";
 };
 
-/*
-
- * NPU (RKNN) core references removed — the vendor rk3588s.dtsi in
- * this kernel does not define rknn_core_* / rknn_mmu_* nodes.
- * The NPU is managed out-of-tree and does not require DTS nodes
- * in this kernel version.
- */
+/* NPU (RKNN) 3-core node and IOMMU are defined in rk3588-vendor-ip.dtsi */
 
 &saradc {
 	vref-supply = <&avcc_1v8_s0>;
@@ -1470,6 +1467,7 @@
  */
 
 &vop_mmu {
+	power-domains = <&power RK3588_PD_VOP>;
 	status = "okay";
 };
 

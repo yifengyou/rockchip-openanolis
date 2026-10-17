@@ -915,8 +915,13 @@ static void rk_iommu_disable(struct rk_iommu *iommu)
 {
 	int i;
 
-	/* Ignore error while disabling, just keep going */
-	WARN_ON(clk_bulk_enable(iommu->num_clocks, iommu->clocks));
+	/* If clocks can't be enabled (power domain may be off),
+	 * skip register access to avoid SError */
+	if (clk_bulk_enable(iommu->num_clocks, iommu->clocks)) {
+		dev_warn(iommu->dev, "cannot enable clocks, skipping disable\n");
+		iommu->enabled = false;
+		return;
+	}
 	rk_iommu_enable_stall(iommu);
 	rk_iommu_disable_paging(iommu);
 	for (i = 0; i < iommu->num_mmu; i++) {
